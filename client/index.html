@@ -21,9 +21,19 @@
       <input id="name" placeholder="User Name eingeben" />
       <input id="password" type="password" placeholder="Passwort eingeben" />
       <button onclick="createUser()">Starten</button>
+      <p>Kein Account? <a href="#" onclick="showRegister()">Registrieren</a></p>
     </div>
     
-    <div class="tweet-box" style="display:none;">
+    <div id="registerBox" style="display:none;">
+      <h3>Neuen Account erstellen:</h3>
+      <input id="regName" placeholder="User Name eingeben" />
+      <input id="regPassword" type="password" placeholder="Passwort eingeben" />
+      <input id="regPasswordConfirm" type="password" placeholder="Passwort bestätigen" />
+      <button onclick="registerUser()">Registrieren</button>
+      <p>Bereits Account? <a href="#" onclick="showLogin()">Einloggen</a></p>
+    </div>
+    
+    <div id="tweetBox" style="display:none;">
       <input id="content" placeholder="Tweet schreiben..." />
       <button onclick="sendTweet()">Senden</button>
     </div>

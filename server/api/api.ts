@@ -12,6 +12,7 @@ export class API {
 
     this.app.get('/hello', this.sayHello)
     this.app.post('/tweets', this.createTweet)
+    this.app.post('/login', this.login)
     this.app.post('/users', this.createUser)
   }
   // Methods
@@ -28,16 +29,49 @@ export class API {
     //Status "created"
     res.sendStatus(201)
   }
+  //Authentifiziert den User
+  private login = async (req: Request, res: Response) => {
+    const { name, password } = req.body
+
+    try {
+      const result = await this.db.executeSQL(
+        `SELECT id FROM users WHERE name = '${name}' AND password = '${password}'`
+      )
+
+      if (result.length > 0) {
+        res.json({
+          user_id: result[0].id
+        });
+      } else {
+        res.status(401).json({
+          error: 'Invalid username or password'
+        });
+      }
+    } catch (err) {
+      console.error('Login error:', err);
+      res.status(500).json({
+        error: 'Internal server error'
+      });
+    }
+  }
+
   //Erstellt den User und speichert in DB
   private createUser = async (req: Request, res: Response) => {
     const { name, password } = req.body
 
-    const result = await this.db.executeSQL(
-      `INSERT INTO users (name, password) VALUES ('${name}', '${password}')`
-    )
+    try {
+      const result = await this.db.executeSQL(
+        `INSERT INTO users (name, password) VALUES ('${name}', '${password}')`
+      )
 
-    res.json({
-      user_id: result.insertId
-    });
+      res.json({
+        user_id: result.insertId
+      });
+    } catch (err) {
+      console.error('Create user error:', err);
+      res.status(500).json({
+        error: 'Failed to create user'
+      });
+    }
   }
 }

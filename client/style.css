@@ -30,7 +30,8 @@ header h3 {
 }
 
 #loginBox,
-.tweet-box {
+#registerBox,
+#tweetBox {
   width: 900px;
   padding: 80px;
   background: #1f2937;
@@ -80,4 +81,23 @@ button {
 button:hover {
   background: #2563eb;
   transform: scale(1.05);
+}
+
+#loginBox p,
+#registerBox p {
+  margin: 0;
+  text-align: center;
+  font-size: 18px;
+}
+
+#loginBox a,
+#registerBox a {
+  color: #3b82f6;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+#loginBox a:hover,
+#registerBox a:hover {
+  text-decoration: underline;
 }

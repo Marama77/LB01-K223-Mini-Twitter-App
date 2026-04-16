@@ -22,24 +22,104 @@ async function createUser(): Promise<void> {
   const name = nameInput.value;
   const password = passwordInput.value;
 
-  const res = await fetch("http://localhost:3000/users", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      name, 
-      password
-    })
-  });
+  if (!name || !password) {
+    alert("Bitte Benutzernamen und Passwort eingeben!");
+    return;
+  }
 
-  const data = await res.json();
-  currentUserId = data.user_id;
+  try {
+    const res = await fetch("http://localhost:4200/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        name, 
+        password
+      })
+    });
 
-  (document.getElementById("loginBox") as HTMLElement).style.display = "none";
-  (document.getElementById("tweetBox") as HTMLElement).style.display = "block";
+    if (res.ok) {
+      const data = await res.json();
+      currentUserId = data.user_id;
+
+      (document.getElementById("loginBox") as HTMLElement).style.display = "none";
+      (document.getElementById("tweetBox") as HTMLElement).style.display = "block";
+    } else {
+      const errorData = await res.json();
+      alert(errorData.error || "Login fehlgeschlagen!");
+    }
+  } catch (error) {
+    console.error("Login error:", error);
+    alert("Verbindung zum Server fehlgeschlagen!");
+  }
 }
 
+//Formular-Wechsel-Funktionen
+function showRegister(): void {
+  (document.getElementById("loginBox") as HTMLElement).style.display = "none";
+  (document.getElementById("registerBox") as HTMLElement).style.display = "block";
+}
+
+function showLogin(): void {
+  (document.getElementById("registerBox") as HTMLElement).style.display = "none";
+  (document.getElementById("loginBox") as HTMLElement).style.display = "block";
+}
+
+//Registrierungsfunktion
+async function registerUser(): Promise<void> {
+  const nameInput = document.getElementById("regName") as HTMLInputElement;
+  const passwordInput = document.getElementById("regPassword") as HTMLInputElement;
+  const passwordConfirmInput = document.getElementById("regPasswordConfirm") as HTMLInputElement;
+
+  const name = nameInput.value;
+  const password = passwordInput.value;
+  const passwordConfirm = passwordConfirmInput.value;
+
+  if (!name || !password || !passwordConfirm) {
+    alert("Bitte alle Felder ausfüllen!");
+    return;
+  }
+
+  if (password !== passwordConfirm) {
+    alert("Passwörter stimmen nicht überein!");
+    return;
+  }
+
+  try {
+    const res = await fetch("http://localhost:4200/users", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        name, 
+        password
+      })
+    });
+
+    if (res.ok) {
+      const data = await res.json();
+      currentUserId = data.user_id;
+
+      // Leere die Registrierungsfelder
+      nameInput.value = "";
+      passwordInput.value = "";
+      passwordConfirmInput.value = "";
+
+      alert("Registrierung erfolgreich! Sie sind jetzt eingeloggt.");
+      
+      (document.getElementById("registerBox") as HTMLElement).style.display = "none";
+      (document.getElementById("tweetBox") as HTMLElement).style.display = "block";
+    } else {
+      const errorData = await res.json();
+      alert(errorData.error || "Registrierung fehlgeschlagen!");
+    }
+  } catch (error) {
+    console.error("Registration error:", error);
+    alert("Verbindung zum Server fehlgeschlagen!");
+  }
+}
 
 //Tweet aus HTML holen & an BE schicken
 
@@ -53,7 +133,7 @@ async function sendTweet(): Promise<void> {
 
   const content = contentInput.value;
 
-  await fetch("http://localhost:3000/tweets", {
+  await fetch("http://localhost:4200/tweets", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
