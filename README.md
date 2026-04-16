@@ -5,18 +5,19 @@ Full-stack "mini-twitter" application built with **TypeScript**, **Node.js (Expr
 # Tech stack
 - **Frontend:** HTML/CSS/TypeScript
 - **Backend:** Node.js + Express + TypeScript
-- **Database:** MariaDB
-- **Orchestration:** Docker Compose
+- **Database:** SQLite
+- **Orchestration:** Docker Compose (jetzt nicht mehr, wäre aber so gedacht gewesen, deswegen Dockerfile etc.)
 
 ## Quick start
-Make sure you have Docker installed. Run the following command in the root directory:
+Make sure you have Docker installed. Run the following command in the root directory: npm run dev:server
 
 ## Features
 - User registration & login (JWT authentication)
 - Create and delete posts
 - View timeline feed
+- Like Tweets
 - REST API backend
-- Containerized setup with Docker
+- Containerized setup with Docker (inactive)
 
 ```bash
-docker compose up -d --build
+npm run dev:server
