@@ -1,28 +1,24 @@
-import sqlite3 from 'sqlite3'
-import { open, Database } from 'sqlite'
+import Database from 'better-sqlite3'
 import { USER_TABLE, TWEET_TABLE } from './schema'
 import path from 'path'
 
 //Klasse für DB-Zugriffe
 
 export class SQLiteDatabase {
-  private _db: Database | null = null
+  private _db: Database.Database | null = null
   
   // Constructor
   constructor() {
     this.initializeDatabase()
   }
   // Methods
-  private initializeDatabase = async () => {
+  private initializeDatabase = () => {
     try {
       // Create SQLite database in project root
       const dbPath = path.join(process.cwd(), 'minitwitter.db')
-      this._db = await open({
-        filename: dbPath,
-        driver: sqlite3.Database
-      })
+      this._db = new Database(dbPath)
       console.log('SQLite database connected successfully')
-      await this.initializeDBSchema()
+      this.initializeDBSchema()
     } catch (error) {
       console.error('SQLite connection failed:', error instanceof Error ? error.message : String(error))
       throw error
@@ -30,27 +26,27 @@ export class SQLiteDatabase {
   }
   
   //Schema wird erstellt
-  private initializeDBSchema = async () => {
+  private initializeDBSchema = () => {
     console.log('Initializing DB schema...')
-    await this.executeSQL(USER_TABLE)
-    await this.executeSQL(TWEET_TABLE)
+    this.executeSQL(USER_TABLE)
+    this.executeSQL(TWEET_TABLE)
   }
   
   //Query-Funktion - führt SQL aus und gibt Ergebnis zurück
-  public executeSQL = async (query: string) => {
+  public executeSQL = (query: string) => {
     if (!this._db) {
       throw new Error('Database not initialized')
     }
     
     try {
       if (query.trim().startsWith('SELECT')) {
-        const results = await this._db.all(query)
+        const results = this._db.prepare(query).all()
         return results
       } else if (query.trim().startsWith('INSERT')) {
-        const result = await this._db.run(query)
-        return { insertId: result.lastID }
+        const result = this._db.prepare(query).run()
+        return { insertId: result.lastInsertRowid }
       } else {
-        const result = await this._db.run(query)
+        const result = this._db.prepare(query).run()
         return result
       }
     } catch (err) {
