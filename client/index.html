@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./style.css" />
+    <script defer src="client.js"></script>
+    <title>Mini-Twitter-App</title>
+  </head>
+  <body>
+    <header>
+      <h1>Mini-Twitter-App</h1>
+      <h2>üK Modul 223</h2>
+      <h3>by Marianne Stieber</h3>
+    </header>
+    
+
+    <div id="loginBox">
+      <h3>Bitte geben Sie Benutzernamen und Passwort ein:</h3>
+      <input id="name" placeholder="User Name eingeben" />
+      <input id="password" type="password" placeholder="Passwort eingeben" />
+      <button onclick="createUser()">Starten</button>
+    </div>
+    
+    <div class="tweet-box" style="display:none;">
+      <input id="content" placeholder="Tweet schreiben..." />
+      <button onclick="sendTweet()">Senden</button>
+    </div>
+  </body>
+</html>
