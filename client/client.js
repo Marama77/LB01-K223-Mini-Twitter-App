@@ -5,6 +5,8 @@ if (location.host.includes('localhost')) {
     document.write(`<script src="http://${host}:35729/livereload.js?snipver=1"></script>`);
 }
 console.log('This is a Test');
+
+
 //User aus HTML-Dokument holen und an BE schicken
 let currentUserId = null;
 async function createUser() {

@@ -1,6 +1,6 @@
 import mariadb from 'mariadb'
 import { Pool } from 'mariadb'
-import { USER_TABLE, TWEET_TABLE } from './schema'
+import { USER_TABLE, TWEET_TABLE, PASSWORD_TABLE } from './schema'
 
 //Klasse für DB-Zugriffe
 
@@ -12,7 +12,7 @@ export class Database {
     //Pool für mehrere Verbindungen
     this._pool = mariadb.createPool({
       database: process.env.DB_NAME || 'minitwitter',
-      host: process.env.DB_HOST || 'localhost',
+      host: process.env.DB_HOST || 'mariadb',
       user: process.env.DB_USER || 'minitwitter',
       password: process.env.DB_PASSWORD || 'supersecret123',
       connectionLimit: 5,
@@ -25,6 +25,7 @@ export class Database {
     console.log('Initializing DB schema...')
     await this.executeSQL(USER_TABLE)
     await this.executeSQL(TWEET_TABLE)
+    await this.executeSQL(PASSWORD_TABLE)
   }
   
   //Query-Funktion - holt Verbindung, führt SQL aus, gibt Ergebnis zurück

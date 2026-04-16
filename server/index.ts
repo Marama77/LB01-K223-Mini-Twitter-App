@@ -27,6 +27,7 @@ class Backend {
   // Constructor
   constructor() {
     this._app = express()
+    this._app.use(express.json())
     this._database = new Database()
     this._api = new API(this._app, this._database)
     this._env = process.env.NODE_ENV || 'development'
@@ -49,13 +50,12 @@ class Backend {
   }
 
   private startServer(): void {
-    if (this._env !== 'production') {
       http.createServer(this.app).listen(3000, () => {
         console.log('Server is listening!')
       })
     }
   }
-}
+
 
 const backend = new Backend()
 export const viteNodeApp = backend.app

@@ -14,6 +14,13 @@ services:
       - MYSQL_PASSWORD=supersecret123
     ports:
       - 3306:3306
+  
+  backend:
+    build: .
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mariadb
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
