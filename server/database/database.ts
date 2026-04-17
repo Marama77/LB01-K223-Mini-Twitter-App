@@ -33,7 +33,7 @@ export class SQLiteDatabase {
   }
   
   //Query-Funktion - führt SQL aus und gibt Ergebnis zurück
-  public executeSQL = (query: string) => {
+  public executeSQL = (query: string): any => {
     if (!this._db) {
       throw new Error('Database not initialized')
     }
