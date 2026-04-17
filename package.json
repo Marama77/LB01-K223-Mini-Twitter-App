@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
-  "type": "module",
   "scripts": {
     "dev": "concurrently \"yarn dev:server\" \"yarn dev:client\"",
     "dev:server": "vite",
@@ -12,7 +11,7 @@
     "start": "NODE_ENV=production node dist/index.js",
     "lint": "eslint --ext .ts server/",
     "prettify": "prettier --write server/**/*.ts",
-    "test": "jest"
+    "test": "jest --forceExit"
   },
   "dependencies": {
     "better-sqlite3": "^12.9.0",
