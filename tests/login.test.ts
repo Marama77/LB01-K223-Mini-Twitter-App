@@ -1,18 +1,37 @@
 import request from "supertest";
-import app from "../src/server/api";
+import app from "../src/server";
 
-describe("Login API", () => {
+describe("Login API (TypeScript)", () => {
 
-  test("should login successfully", async () => {
+  it("should login successfully with correct credentials", async () => {
     const res = await request(app)
       .post("/login")
       .send({
-        name: "Max",
+        name: "max",
         password: "1234"
       });
 
     expect(res.status).toBe(200);
-    expect(res.body.user_id).toBeDefined();
+    expect(res.body.user_id).toBe(1);
+  });
+
+  it("should fail if no data is sent", async () => {
+    const res = await request(app)
+      .post("/login")
+      .send({});
+
+    expect(res.status).toBe(400);
+  });
+
+  it("should fail with wrong credentials", async () => {
+    const res = await request(app)
+      .post("/login")
+      .send({
+        name: "wrong",
+        password: "wrong"
+      });
+
+    expect(res.status).toBe(401);
   });
 
 });
