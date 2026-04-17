@@ -81,6 +81,43 @@ OOP was used to:
 
 ---
 
+# UML ()
+
+classDiagram
+
+class Frontend {
+  +login()
+  +registerUser()
+  +sendTweet()
+  +showUI()
+}
+
+class Backend {
+  +setupRoutes()
+  +startServer()
+}
+
+class API {
+  +login()
+  +createUser()
+  +createTweet()
+  +sayHello()
+}
+
+class AuthMiddleware {
+  +authenticateToken()
+}
+
+class Database {
+  +executeSQL()
+}
+
+Frontend --> Backend : HTTP Requests (fetch)
+Backend --> API : uses
+API --> Database : queries data
+API --> AuthMiddleware : protects routes
+AuthMiddleware --> API : allows/blocks request
+
 # ERD (Entity Relationship Diagram)
 
 ```mermaid
