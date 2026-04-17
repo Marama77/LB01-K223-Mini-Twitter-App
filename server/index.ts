@@ -1,8 +1,31 @@
-import express, { Express, Request, Response } from 'express'
+import express, { NextFunction, Express, Request, Response } from 'express'
 import { API } from './api'
 import * as http from 'http'
 import { resolve, dirname } from 'path'
 import { Database } from './database'
+import jwt from 'jsonwebtoken'
+
+class AuthMiddleware {
+  authenticateToken = (req: Request, res: Response, next: NextFunction) => {
+    const authHeader = req.headers['authorization']
+    const token = authHeader && authHeader.split(' ')[1]
+
+    if (!token) {
+      return res.status(401).json({ message: 'Token missing' })
+    }
+
+    jwt.verify(token, process.env.JWT_SECRET as string, (err, decoded) => {
+      if (err) {
+        return res.status(403).json({ message: 'Invalid or expired token' })
+      }
+
+      ;(req as any).user = decoded
+      next()
+    })
+  }
+}
+
+export const authMiddleware = new AuthMiddleware()
 
 class Backend {
   // Properties

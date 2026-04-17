@@ -1,6 +1,7 @@
 import { Request, Response, Express } from 'express'
 import { Database } from '../database/database'
 
+//API-Klasse: Strukturiert die Backend-Logik & kapselt zusammengehörige Strukturen.
 export class API {
   // Properties
   app: Express
@@ -37,10 +38,11 @@ export class API {
       const result = await this.db.executeSQL(
         `SELECT id FROM users WHERE name = '${name}' AND password = '${password}'`
       )
-
+      
       if (result.length > 0) {
         res.json({
-          user_id: result[0].id
+          user_id: result[0].id,
+          name: result[0].name
         });
       } else {
         res.status(401).json({

@@ -1,9 +1,4 @@
-if (location.host.includes('localhost')) {
-    // Load livereload script if we are on localhost
-    const host = (location.host || 'localhost').split(':')[0];
-    document.write(`<script src="http://${host}:35729/livereload.js?snipver=1"></script>`);
-}
-console.log('This is a Test');
+
 //User aus HTML-Dokument holen und an BE schicken
 let currentUserId = null;
 async function createUser() {
